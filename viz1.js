@@ -27,12 +27,8 @@ widthScale = d3.scaleLinear()
     .range([0, (w / dbW.length - barPadding)]);
 
 opacityScale = d3.scaleLinear()
-    .domain([0, d3.max(dbO)])
+    .domain([d3.min(dbO), d3.max(dbO)])
     .range([.25, 1]);
-
-//console.log(opacityScale);
-
-opacityFactor = d3.max(dbO);
 
 //Create SVG element
 var svg = d3.select("body")
@@ -50,25 +46,11 @@ svg.selectAll("rect")
     .attr("y", function (d) {
         return h - (d * zoom);
     })
-    // .attr("width", function(d){
-    //     return w/dbH.length - barPadding;
-    // })
     // .attr("width", w / dbH.length - barPadding)
-    // .attr("width", function(d){
-    //     //console.log(widthScale(d));
-    //     return widthScale(d);
-    // })
     .attr("height", function (d) {
         return d * zoom;
     })
     .attr("fill", "rgb(0,0,200)")
-// function (d) {
-//return "rgb(0, 0, " + Math.round(d * 10) + ")";
-//    return "rgb(0, 0, 200)";
-//})
-
-
-
 
 svg.selectAll("text")
     .data(dbH)
@@ -88,18 +70,14 @@ svg.selectAll("text")
     .attr("font-size", "11px")
     .attr("fill", "red");
 
-
-
-// d3.selectAll('svg rect')
-//     .attr('opacity', function (d) {
-//         //console.log(i + ': ' + opacityScale(d))
-//         return opacityScale(d);
-//     });
-
 d3.selectAll('svg rect').data(dbW)
     .attr("width", function (d) {
         return widthScale(d);
     })
 
-
+d3.selectAll('svg rect').data(dbO)
+    .attr('opacity', function (d,i) {
+        console.log(i + ': ' + opacityScale(d) + ' val: ' + dbO[i] )
+        return opacityScale(d);
+    });
 
