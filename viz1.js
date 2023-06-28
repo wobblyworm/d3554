@@ -1,7 +1,8 @@
 //Width and height
 var w = 500;
-var h = 100;
+var h = 100 + 20;
 var barPadding = 1;
+var zoom = 4;
 
 var db = [[5, 23, 75], [10, 14, 34], [13, 67, 23], [19, 10, 65],
 [21, 42, 29], [25, 25, 25], [22, 90, 30], [18, 57, 17],
@@ -20,6 +21,19 @@ for (var i = 0; i < db.length; i++) {
     dbO.push(db[i][2]);
 }
 
+
+widthScale = d3.scaleLinear()
+    .domain([0, d3.max(dbW)])
+    .range([0, (w / dbW.length - barPadding)]);
+
+opacityScale = d3.scaleLinear()
+    .domain([0, d3.max(dbO)])
+    .range([.25, 1]);
+
+//console.log(opacityScale);
+
+opacityFactor = d3.max(dbO);
+
 //Create SVG element
 var svg = d3.select("body")
     .append("svg")
@@ -34,15 +48,27 @@ svg.selectAll("rect")
         return i * (w / dbH.length);
     })
     .attr("y", function (d) {
-        return h - (d * 4);
+        return h - (d * zoom);
     })
-    .attr("width", w / dbH.length - barPadding)
+    // .attr("width", function(d){
+    //     return w/dbH.length - barPadding;
+    // })
+    // .attr("width", w / dbH.length - barPadding)
+    // .attr("width", function(d){
+    //     //console.log(widthScale(d));
+    //     return widthScale(d);
+    // })
     .attr("height", function (d) {
-        return d * 4;
+        return d * zoom;
     })
-    .attr("fill", function (d) {
-        return "rgb(0, 0, " + Math.round(d * 10) + ")";
-    });
+    .attr("fill", "rgb(0,0,200)")
+// function (d) {
+//return "rgb(0, 0, " + Math.round(d * 10) + ")";
+//    return "rgb(0, 0, 200)";
+//})
+
+
+
 
 svg.selectAll("text")
     .data(dbH)
@@ -51,15 +77,29 @@ svg.selectAll("text")
     .text(function (d) {
         return d;
     })
-    .attr("text-anchor", "middle")
+    .attr("text-anchor", "left")
     .attr("x", function (d, i) {
-        return i * (w / dbH.length) + (w / dbH.length - barPadding) / 2;
+        return i * (w / dbW.length);
     })
     .attr("y", function (d) {
-        return h - (d * 4) + 14;
+        return h - (d * zoom) - 4;
     })
     .attr("font-family", "sans-serif")
     .attr("font-size", "11px")
-    .attr("fill", "white");
+    .attr("fill", "red");
 
-d3.selectAll('svg', 'rect').data(dbO)
+
+
+// d3.selectAll('svg rect')
+//     .attr('opacity', function (d) {
+//         //console.log(i + ': ' + opacityScale(d))
+//         return opacityScale(d);
+//     });
+
+d3.selectAll('svg rect').data(dbW)
+    .attr("width", function (d) {
+        return widthScale(d);
+    })
+
+
+
