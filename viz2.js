@@ -77,7 +77,7 @@ d3.selectAll('svg rect').data(dbW)
 
 d3.selectAll('svg rect').data(dbO)
     .attr('opacity', function (d,i) {
-        //console.log(i + ': ' + opacityScale(d) + ' val: ' + dbO[i] )
+        console.log(i + ': ' + opacityScale(d) + ' val: ' + dbO[i] )
         return opacityScale(d);
     });
 
