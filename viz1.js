@@ -1,7 +1,7 @@
 //Width and height
 var w = 500;
 var h = 100 + 20;
-var barPadding = 1;
+var barPadding = 4;
 var zoom = 4;
 
 var db = [[5, 23, 75], [10, 14, 34], [13, 67, 23], [19, 10, 65],
