@@ -103,10 +103,7 @@
                 console.log(db)
                 svg.selectAll("rect").data(db)
                     .transition()
-                    // .delay(function (d, i) {
-                    //     return i * 20;
-                    // })
-                    // .delay(500)
+                    .ease(d3.easeLinear)
                     .attr("x", function (d, i) {
                         return i * (w / db.length)
                     })
@@ -124,20 +121,22 @@
                     })
                 svg.selectAll("text").data(db)
                     .transition()
+                    .delay(function (d, i) {
+                        return i * 10;
+                    })
                     .attr("y", function (d) {
                         return h - yScale(d[0]) - 2;
                     })
                     .text(function (d) {
                         return d[sortVar];
                     })
-
             })
 
         svg.selectAll("text").data(db)
             .enter()
             .append("text")
             .text(function (d) {
-                return d[(sortVar + 1)%3];
+                return d[(sortVar + 1) % 3];
             })
             .attr("text-anchor", "left")
             .attr("x", function (d, i) {
@@ -156,6 +155,7 @@
                 yScale.range([0, (h - 20) * zoom[zoomFactor]]);
                 svg.selectAll('rect').data(db)
                     .transition()
+                    .ease(d3.easeExpIn)
                     .attr("y", function (d) {
                         return h - yScale(d[0])
                     })
@@ -164,6 +164,11 @@
                     })
                 svg.selectAll("text").data(db)
                     .transition()
+                    .delay(function (d, i) {
+                        return i * 20;
+                    })
+                    .duration(200)
+                    .ease(d3.easeLinear)
                     .attr("y", function (d) {
                         return h - yScale(d[0]) - 2;
                     })
