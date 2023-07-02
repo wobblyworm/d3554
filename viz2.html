@@ -100,10 +100,7 @@
                 db.sort(function (a, b) {
                     return d3.ascending(a[sortVar], b[sortVar])
                 })
-                console.log(db)
                 svg.selectAll("rect").data(db)
-                    .transition()
-                    .ease(d3.easeLinear)
                     .attr("x", function (d, i) {
                         return i * (w / db.length)
                     })
@@ -119,11 +116,16 @@
                     .attr('opacity', function (d) {
                         return opacityScale(d[2]);
                     })
+                    .transition()
+                    .delay(function (d, i) {
+                        return i * 20;
+                    })
                 svg.selectAll("text").data(db)
                     .transition()
                     .delay(function (d, i) {
                         return i * 10;
                     })
+                    .ease(d3.easeLinear)
                     .attr("y", function (d) {
                         return h - yScale(d[0]) - 2;
                     })
@@ -175,18 +177,6 @@
 
             })
 
-        // svg.selectAll("rect").transition()
-        //     .attr('height', function (d) {
-        //         return yScale(d);
-        //     })
-        //     .attr('y', function (d) {
-        //         return h - yScale(d[0]);
-        //     })
-        //     .delay(function (d, i) {
-        //         return i * 20;
-        //     })
-        //     .duration(2000)
-        //     .ease(d3.easeBounceIn)
     </script>
 </body>
 
