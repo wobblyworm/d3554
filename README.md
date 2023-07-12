@@ -9,6 +9,8 @@ Rutgers University :: Summer 2023
 - Assignment 1 
   - separated variables: [link](https://wobblyworm.github.io/d3554/viz1.html)
   - book technique: [link](https://wobblyworm.github.io/d3554/viz1-2.html)
-- Assignment 2 [link](https://wobblyworm.github.io/d3554/viz2.html)
+- Assignment 2
+  - first submission: [link](https://wobblyworm.github.io/d3554/viz2.html)
+  - updated submission: [link](https://wobblyworm.github.io/d3554/viz2-2.html)
 
 
