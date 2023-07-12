@@ -59,8 +59,6 @@
             .range([.25, 1]);
 
 
-
-
         //Create SVG element
         var svg = d3.select("body")
             .append("svg")
@@ -118,8 +116,8 @@
 
         svg.selectAll('rect')
             .on('click', function () {
-                sortVar = (sortVar + 1) % 3
-                db.sort(function (a, b) {
+                sortVar = (sortVar + 1) % 3  // changing sort variable
+                db.sort(function (a, b) { // executing sort
                     return d3.ascending(a[sortVar], b[sortVar])
                 })
 
@@ -127,9 +125,7 @@
                     .attr("y", function (d) {
                         return h - yScale(d[0])
                     })
-                    .attr('x', function (d, i) {
-                        return i * w / d.length
-                    })
+                    .attr('x', w)
                     .attr("width", function (d) {
                         return xScale(d[1])
                     })
@@ -140,14 +136,11 @@
                         return opacityScale(d[2]);
                     })
 
-
                 svg.selectAll("text").data(db)
                     .attr("y", function (d) {
                         return h - yScale(d[0]) - 2;
                     })
-                    .attr('x', function(d,i){
-                        return i * w/db.length
-                    })
+                    .attr('x', w)
                     .text(function (d) {
                         return d[sortVar];
                     })
@@ -168,13 +161,13 @@
                     .delay(function (d, i) {
                         return i / db.length * 400;
                     })
-                    //.ease(d3.easeLinear)
                     .attr('x', function(d,i){
                         return i * w/db.length
                     })
 
-            })
+            }) // end of sorting event action
 
+        // zoom in and out functionality
         d3.select('body p')
             .on('click', function () {
                 zoomFactor = (zoomFactor + 1) % 3
@@ -200,14 +193,6 @@
                     })
 
             })
-
-
-
-
-
-
-
-
 
     </script>
 </body>
