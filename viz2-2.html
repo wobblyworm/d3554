@@ -11,13 +11,13 @@
 </head>
 
 <body>
-    <p style="font-size:6px">Click on this text to update the chart with new data values (once).</p>
+    <p>Click on this text to update the chart with new data values (once).</p>
 
     <script type="text/javascript">
 
         //Width and height
-        var w = 300,
-            h = 150 + 20,
+        var w = 500,
+            h = 250 + 20,
             barPadding = 1,
             zoom = [1, .33, .67],
             sortVar = -1,
@@ -57,11 +57,6 @@
         var opacityScale = d3.scaleLinear()
             .domain([d3.min(db, (db) => db[2]), d3.max(db, (db) => db[2])])
             .range([.25, 1]);
-
-        var delayFunction = function (d, i) {
-            return i / db.length; //return i * 50; 
-        }
-
 
 
         //Create SVG element
@@ -119,22 +114,20 @@
             .attr("font-size", "11px")
             .attr("fill", "red");
 
-
         svg.selectAll('rect')
             .on('click', function () {
-                sortVar = (sortVar + 1) % 3
-                db.sort(function (a, b) {
+                sortVar = (sortVar + 1) % 3  // changing sort variable
+                db.sort(function (a, b) { // executing sort
                     return d3.ascending(a[sortVar], b[sortVar])
                 })
+
                 svg.selectAll("rect").data(db)
-                    .attr("x", function (d, i) {
-                        return i * (w / db.length)
-                    })
-                    .attr("width", function (d) {
-                        return xScale(d[1])
-                    })
                     .attr("y", function (d) {
                         return h - yScale(d[0])
+                    })
+                    .attr('x', w)
+                    .attr("width", function (d) {
+                        return xScale(d[1])
                     })
                     .attr("height", function (d) {
                         return yScale(d[0]);
@@ -142,63 +135,64 @@
                     .attr('opacity', function (d) {
                         return opacityScale(d[2]);
                     })
-                    // .transition()
-                    // .delay(function (d, i) {
-                    //     return i * 20;
-                    // })
-                    .transition()
-                    .duration(1000)
-                    .delay(function (d, i) {
-                        return delayFunction(d, i);
+
+                svg.selectAll("text").data(db)
+                    .attr("y", function (d) {
+                        return h - yScale(d[0]) - 2;
+                    })
+                    .attr('x', w)
+                    .text(function (d) {
+                        return d[sortVar];
                     })
 
+                svg.selectAll('rect')
+                    .transition()
+                    .duration(400)
+                    .delay(function (d, i) {
+                        return i / db.length * 400;
+                    })
+                    .attr("x", function (d, i) {
+                        return i * (w / db.length)
+                    })
+
+                    svg.selectAll('text')
+                    .transition()
+                    .duration(400)
+                    .delay(function (d, i) {
+                        return i / db.length * 400;
+                    })
+                    .attr('x', function(d,i){
+                        return i * w/db.length
+                    })
+
+            }) // end of sorting event action
+
+        // zoom in and out functionality
+        d3.select('body p')
+            .on('click', function () {
+                zoomFactor = (zoomFactor + 1) % 3
+                yScale.range([0, (h - 20) * zoom[zoomFactor]]);
+                svg.selectAll('rect').data(db)
+                    .transition()
+                    .ease(d3.easeExpIn)
+                    .attr("y", function (d) {
+                        return h - yScale(d[0])
+                    })
+                    .attr("height", function (d) {
+                        return yScale(d[0]);
+                    })
                 svg.selectAll("text").data(db)
                     .transition()
                     .delay(function (d, i) {
-                        return i * 10;
+                        return i * 20;
                     })
+                    .duration(200)
                     .ease(d3.easeLinear)
                     .attr("y", function (d) {
                         return h - yScale(d[0]) - 2;
                     })
-                    .text(function (d) {
-                        return d[sortVar];
-                    })
+
             })
-
-        // d3.select('body p')
-        //     .on('click', function () {
-        //         zoomFactor = (zoomFactor + 1) % 3
-        //         yScale.range([0, (h - 20) * zoom[zoomFactor]]);
-        //         svg.selectAll('rect').data(db)
-        //             .transition()
-        //             .ease(d3.easeExpIn)
-        //             .attr("y", function (d) {
-        //                 return h - yScale(d[0])
-        //             })
-        //             .attr("height", function (d) {
-        //                 return yScale(d[0]);
-        //             })
-        //         svg.selectAll("text").data(db)
-        //             .transition()
-        //             .delay(function (d, i) {
-        //                 return i * 20;
-        //             })
-        //             .duration(200)
-        //             .ease(d3.easeLinear)
-        //             .attr("y", function (d) {
-        //                 return h - yScale(d[0]) - 2;
-        //             })
-
-        //     })
-
-
-
-
-
-
-
-
 
     </script>
 </body>
